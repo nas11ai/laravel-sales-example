@@ -3,6 +3,9 @@ import { Head, useForm } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { store as loginStore } from '@/routes/login';
+
+const appName = import.meta.env.VITE_APP_NAME || 'Sales App';
 
 const form = useForm({
     email: '',
@@ -10,10 +13,8 @@ const form = useForm({
     remember: false,
 });
 
-const appName = import.meta.env.VITE_APP_NAME || 'Sales App';
-
 function submit() {
-    form.post('/login', {
+    form.post(loginStore().url, {
         onFinish: () => form.reset('password'),
     });
 }

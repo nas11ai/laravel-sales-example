@@ -16,30 +16,38 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import NavMain from '@/components/NavMain.vue';
+import NavUser from '@/components/NavUser.vue';
 import type { NavItem } from '@/types/navigation';
+import { dashboard as dashboardIndex } from '@/routes';
+import { index as salesIndex } from '@/routes/sales';
+import { index as paymentsIndex } from '@/routes/payments';
+import { index as masterItemsIndex } from '@/routes/master/items';
+import { index as masterUsersIndex } from '@/routes/master/users';
+
+const appName = import.meta.env.VITE_APP_NAME || 'Sales App';
 
 const navItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: dashboardIndex().url,
         icon: LayoutDashboard,
     },
     {
         title: 'Penjualan',
-        href: '/sales',
+        href: salesIndex().url,
         icon: ShoppingCart,
     },
     {
         title: 'Pembayaran',
-        href: '/payments',
+        href: paymentsIndex().url,
         icon: CreditCard,
     },
     {
         title: 'Master',
         icon: Package,
         items: [
-            { title: 'Item', href: '/master/items' },
-            { title: 'User', href: '/master/users' },
+            { title: 'Item', href: masterItemsIndex().url },
+            { title: 'User', href: masterUsersIndex().url },
         ],
     },
 ];
@@ -51,8 +59,8 @@ const navItems: NavItem[] = [
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link href="/dashboard">
-                            <span class="font-semibold">Sales App</span>
+                        <Link :href="dashboardIndex().url">
+                            <span class="font-semibold">{{ appName }}</span>
                         </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -64,9 +72,7 @@ const navItems: NavItem[] = [
         </SidebarContent>
 
         <SidebarFooter>
-            <div class="p-2 text-xs text-muted-foreground">
-                Sales Management
-            </div>
+            <NavUser />
         </SidebarFooter>
     </Sidebar>
 </template>
