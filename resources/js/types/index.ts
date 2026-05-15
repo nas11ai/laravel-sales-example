@@ -13,6 +13,7 @@ export interface Item {
     kode: string;
     nama: string;
     image_path: string | null;
+    image_url: string | null;
     harga: number;
     created_at: string;
     updated_at: string;
