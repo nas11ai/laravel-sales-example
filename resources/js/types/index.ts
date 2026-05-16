@@ -163,6 +163,16 @@ export interface SaleEdit {
     }[];
 }
 
+export interface BulanData {
+    label: string;
+    total: number;
+}
+
+export interface ItemData {
+    label: string;
+    qty: number;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T &
