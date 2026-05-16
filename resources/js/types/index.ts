@@ -43,6 +43,33 @@ export interface Sale {
     updated_at: string;
 }
 
+export interface SaleItemRow {
+    item_id: number | null;
+    nama: string;
+    qty: number;
+    price_snapshot: number;
+    total_price: number;
+}
+
+export interface SaleRow {
+    id: number;
+    kode: string;
+    tanggal_label: string;
+    status: string;
+    status_label: string;
+    status_color: string;
+    total_amount: number;
+    is_editable: boolean;
+    created_by: { name: string } | null;
+}
+
+export interface ItemOption {
+    id: number;
+    kode: string;
+    nama: string;
+    harga: number;
+}
+
 export interface Payment {
     id: number;
     kode: string;
@@ -52,6 +79,39 @@ export interface Payment {
     jumlah: number;
     created_at: string;
     updated_at: string;
+}
+
+export interface SaleDetail {
+    id: number;
+    kode: string;
+    tanggal_label: string;
+    status: string;
+    status_label: string;
+    status_color: string;
+    total_amount: number;
+    total_paid: number;
+    is_editable: boolean;
+    created_by: { name: string } | null;
+    items: SaleItem[];
+    payments: {
+        id: number;
+        kode: string;
+        jumlah: number;
+        tanggal: string;
+    }[];
+}
+
+export interface SaleEdit {
+    id: number;
+    kode: string;
+    tanggal: string;
+    items: {
+        item_id: number;
+        item: { id: number; nama: string; kode: string };
+        qty: number;
+        price_snapshot: number;
+        total_price: number;
+    }[];
 }
 
 export type PageProps<
