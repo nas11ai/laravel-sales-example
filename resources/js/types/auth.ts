@@ -12,3 +12,16 @@ export type User = {
 export type Auth = {
     user: User;
 };
+
+export interface RoleRow {
+    id: number;
+    name: string;
+    permissions: string[];
+    permissions_count: number;
+}
+
+export interface RoleData {
+    id: number;
+    name: string;
+    permissions: string[];
+}

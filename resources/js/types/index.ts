@@ -61,6 +61,7 @@ export type PageProps<
         auth: {
             user: User | null;
             roles: string[];
+            permissions: string[];
         };
         flash: {
             success: string | null;

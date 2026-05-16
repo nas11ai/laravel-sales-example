@@ -8,8 +8,14 @@ export const useAuthStore = defineStore('auth', () => {
 
     const user = computed<User | null>(() => page.props.auth.user);
     const roles = computed<string[]>(() => page.props.auth.roles ?? []);
+    const permissions = computed<string[]>(
+        () => page.props.auth.permissions ?? [],
+    );
+
     const isAdmin = computed(() => roles.value.includes('admin'));
     const isStaff = computed(() => roles.value.includes('staff'));
 
-    return { user, roles, isAdmin, isStaff };
+    const can = (permission: string) => permissions.value.includes(permission);
+
+    return { user, roles, permissions, isAdmin, isStaff, can };
 });

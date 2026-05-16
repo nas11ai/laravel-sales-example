@@ -23,6 +23,7 @@ import { index as salesIndex } from '@/routes/sales';
 import { index as paymentsIndex } from '@/routes/payments';
 import { index as masterItemsIndex } from '@/routes/master/items';
 import { index as masterUsersIndex } from '@/routes/master/users';
+import { index as masterRolesIndex } from '@/routes/master/roles';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Sales App';
 
@@ -48,6 +49,7 @@ const navItems: NavItem[] = [
         items: [
             { title: 'Item', href: masterItemsIndex().url },
             { title: 'User', href: masterUsersIndex().url },
+            { title: 'Role & Permission', href: masterRolesIndex().url },
         ],
     },
 ];
