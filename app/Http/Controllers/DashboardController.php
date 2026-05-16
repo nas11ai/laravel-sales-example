@@ -6,6 +6,7 @@ use App\Models\Sale;
 use App\Models\SaleItem;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -33,25 +34,26 @@ class DashboardController extends Controller
             fn($q) => $q->whereBetween('tanggal', [$startDate, $endDate])
         )->sum('qty');
 
-        // Chart 1 — penjualan per bulan (12 bulan terakhir, fixed range)
-        $penjualanPerBulan = Sale::selectRaw('
-                YEAR(tanggal)  AS year,
-                MONTH(tanggal) AS month,
-                SUM(total_amount) AS total
-            ')
-            ->whereBetween('tanggal', [
-                Carbon::now()->subMonths(11)->startOfMonth(),
-                Carbon::now()->endOfMonth(),
-            ])
-            ->groupByRaw('YEAR(tanggal), MONTH(tanggal)')
-            ->orderByRaw('YEAR(tanggal), MONTH(tanggal)')
+        // Chart penjualan per bulan (12 bulan terakhir, fixed range)
+        $driver = DB::connection()->getDriverName();
+
+        $yearExpr  = $driver === 'sqlite' ? "strftime('%Y', tanggal)" : 'YEAR(tanggal)';
+        $monthExpr = $driver === 'sqlite' ? "strftime('%m', tanggal)" : 'MONTH(tanggal)';
+
+        $penjualanPerBulan = Sale::selectRaw("
+            {$yearExpr}  AS year,
+            {$monthExpr} AS month,
+            SUM(total_amount) AS total
+        ")
+            ->groupByRaw("{$yearExpr}, {$monthExpr}")
+            ->orderByRaw("{$yearExpr}, {$monthExpr}")
             ->get()
             ->map(fn($row) => [
                 'label' => Carbon::create($row->year, $row->month)->translatedFormat('M Y'),
                 'total' => (int) $row->total,
             ]);
 
-        // Chart 2 — qty per item (dalam range filter)
+        // Chart qty per item (dalam range filter)
         $qtyPerItem = SaleItem::with('item:id,nama')
             ->whereHas(
                 'sale',
