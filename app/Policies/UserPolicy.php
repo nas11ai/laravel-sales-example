@@ -21,8 +21,8 @@ class UserPolicy
         return $user->can('users.edit');
     }
 
-    public function delete(User $user, User $model): bool
+    public function delete(User $user): bool
     {
-        return $user->can('users.delete') && $user->id !== $model->id;
+        return $user->can('users.delete');
     }
 }
