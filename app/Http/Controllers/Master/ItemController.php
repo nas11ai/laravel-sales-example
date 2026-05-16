@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateItemRequest;
 use App\Http\Resources\ItemResource;
 use App\Models\Item;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,6 +17,7 @@ class ItemController extends Controller
 {
     public function index(): Response
     {
+        Gate::authorize('viewAny', Item::class);
         $items = ItemResource::collection(
             Item::latest()->get()
         );
@@ -27,11 +29,13 @@ class ItemController extends Controller
 
     public function create(): Response
     {
+        Gate::authorize('create', Item::class);
         return Inertia::render('master/items/Create');
     }
 
     public function store(StoreItemRequest $request): RedirectResponse
     {
+        Gate::authorize('create', Item::class);
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
@@ -49,6 +53,7 @@ class ItemController extends Controller
 
     public function edit(Item $item): Response
     {
+        Gate::authorize('update', $item);
         return Inertia::render('master/items/Edit', [
             'item' => ItemResource::make($item),
         ]);
@@ -56,6 +61,7 @@ class ItemController extends Controller
 
     public function update(UpdateItemRequest $request, Item $item): RedirectResponse
     {
+        Gate::authorize('update', $item);
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
@@ -76,6 +82,7 @@ class ItemController extends Controller
 
     public function destroy(Item $item): RedirectResponse
     {
+        Gate::authorize('delete', $item);
         if ($item->image_path) {
             Storage::disk('public')->delete($item->image_path);
         }
