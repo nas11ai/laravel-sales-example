@@ -6,8 +6,7 @@ import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
 import DataTable from '@/components/DataTable.vue';
 import { Button } from '@/components/ui/button';
 import { useRupiah } from '@/composables/useRupiah';
-import type { PageProps } from '@/types';
-import { Item } from '@/types';
+import type { Item, PageProps } from '@/types';
 
 defineProps<
     PageProps<{

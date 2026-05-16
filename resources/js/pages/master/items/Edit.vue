@@ -4,16 +4,8 @@ import { ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import type { PageProps } from '@/types';
+import type { Item, PageProps } from '@/types';
 import RupiahInput from '@/components/RupiahInput.vue';
-
-interface Item {
-    id: number;
-    kode: string;
-    nama: string;
-    harga: number;
-    image_url: string | null;
-}
 
 const props = defineProps<
     PageProps<{
