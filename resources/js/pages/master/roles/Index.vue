@@ -8,6 +8,15 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { PageProps, RoleRow } from '@/types';
 import rolesRoute from '@/routes/master/roles';
+import { dashboard } from '@/routes';
+import { useBreadcrumb } from '@/composables/useBreadcrumbs';
+
+const { setBreadcrumbs } = useBreadcrumb();
+
+setBreadcrumbs([
+    { title: 'Dashboard', href: dashboard().url },
+    { title: 'Master Role & Permission'},
+]);
 
 defineProps<
     PageProps<{

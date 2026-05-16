@@ -8,6 +8,16 @@ import { useRupiah } from '@/composables/useRupiah';
 import type { PageProps, PaymentEdit } from '@/types';
 import payments from '@/routes/payments';
 import { computed, watch } from 'vue';
+import { dashboard } from '@/routes';
+import { useBreadcrumb } from '@/composables/useBreadcrumbs';
+
+const { setBreadcrumbs } = useBreadcrumb();
+
+setBreadcrumbs([
+    { title: 'Dashboard', href: dashboard().url },
+    { title: 'Pembayaran', href: payments.index().url },
+    { title: 'Edit Pembayaran' },
+]);
 
 const props = defineProps<
     PageProps<{
@@ -106,18 +116,11 @@ watch(
                 </p>
             </div>
 
-            <div class="flex gap-3 pt-2">
-                <Button type="submit" :disabled="form.processing">
-                    {{ form.processing ? 'Menyimpan...' : 'Simpan Perubahan' }}
-                </Button>
-                <Button
-                    type="button"
-                    variant="outline"
-                    @click="router.visit(payments.show(payment.data.id).url)"
-                >
-                    Batal
-                </Button>
-            </div>
+            <FormActions
+                :processing="form.processing"
+                submit-label="Simpan Perubahan"
+                :cancel-href="payments.show(payment.data.id).url"
+            />
         </form>
     </div>
 </template>

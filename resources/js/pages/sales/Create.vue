@@ -11,6 +11,17 @@ import { useRupiah } from '@/composables/useRupiah';
 import { useSaleFormStore } from '@/stores/useSaleFormStore';
 import type { ItemOption, PageProps } from '@/types';
 import sales from '@/routes/sales';
+import { dashboard } from '@/routes';
+import { useBreadcrumb } from '@/composables/useBreadcrumbs';
+import FormActions from '@/components/FormActions.vue';
+
+const { setBreadcrumbs } = useBreadcrumb();
+
+setBreadcrumbs([
+    { title: 'Dashboard', href: dashboard().url },
+    { title: 'Penjualan', href: sales.index().url },
+    { title: 'Tambah Penjualan' },
+]);
 
 const props = defineProps<PageProps<{ items: ItemOption[] }>>();
 
@@ -111,18 +122,11 @@ function submit() {
                 </div>
             </div>
 
-            <div class="flex gap-3">
-                <Button type="submit" :disabled="form.processing">
-                    {{ form.processing ? 'Menyimpan...' : 'Simpan Penjualan' }}
-                </Button>
-                <Button
-                    type="button"
-                    variant="outline"
-                    @click="router.visit(sales.index().url)"
-                >
-                    Batal
-                </Button>
-            </div>
+            <FormActions
+                :processing="form.processing"
+                submit-label="Simpan Penjualan"
+                :cancel-href="sales.index().url"
+            />
         </form>
     </div>
 </template>

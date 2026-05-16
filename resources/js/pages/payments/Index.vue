@@ -11,6 +11,15 @@ import { useRupiah } from '@/composables/useRupiah';
 import { useAuthStore } from '@/stores/useAuthStore';
 import type { PageProps, PaymentRow } from '@/types';
 import paymentRoute from '@/routes/payments';
+import { dashboard } from '@/routes';
+import { useBreadcrumb } from '@/composables/useBreadcrumbs';
+
+const { setBreadcrumbs } = useBreadcrumb();
+
+setBreadcrumbs([
+    { title: 'Dashboard', href: dashboard().url },
+    { title: 'Pembayaran' },
+]);
 
 const props = defineProps<
     PageProps<{
@@ -83,7 +92,9 @@ const columns: ColumnDef<PaymentRow>[] = [
                         variant: 'outline',
                         size: 'sm',
                         onClick: () =>
-                            router.visit(paymentRoute.show(row.original.id).url),
+                            router.visit(
+                                paymentRoute.show(row.original.id).url,
+                            ),
                     },
                     () => [h(Eye, { class: 'size-4' })],
                 ),

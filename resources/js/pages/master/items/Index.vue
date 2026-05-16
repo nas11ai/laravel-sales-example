@@ -8,6 +8,15 @@ import { Button } from '@/components/ui/button';
 import { useRupiah } from '@/composables/useRupiah';
 import type { Item, PageProps } from '@/types';
 import itemRoutes from '@/routes/master/items';
+import { dashboard } from '@/routes';
+import { useBreadcrumb } from '@/composables/useBreadcrumbs';
+
+const { setBreadcrumbs } = useBreadcrumb();
+
+setBreadcrumbs([
+    { title: 'Dashboard', href: dashboard().url },
+    { title: 'Master Item' },
+]);
 
 defineProps<
     PageProps<{

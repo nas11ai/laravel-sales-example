@@ -12,6 +12,16 @@ import {
 } from '@/components/ui/select';
 import type { PageProps } from '@/types';
 import users from '@/routes/master/users';
+import { dashboard } from '@/routes';
+import { useBreadcrumb } from '@/composables/useBreadcrumbs';
+
+const { setBreadcrumbs } = useBreadcrumb();
+
+setBreadcrumbs([
+    { title: 'Dashboard', href: dashboard().url },
+    { title: 'Master User', href: users.index().url },
+    { title: 'Tambah User' },
+]);
 
 const props = defineProps<PageProps<{ roles: string[] }>>();
 
@@ -107,18 +117,11 @@ function submit() {
                 />
             </div>
 
-            <div class="flex gap-3 pt-2">
-                <Button type="submit" :disabled="form.processing">
-                    {{ form.processing ? 'Menyimpan...' : 'Simpan' }}
-                </Button>
-                <Button
-                    type="button"
-                    variant="outline"
-                    @click="router.visit(users.index().url)"
-                >
-                    Batal
-                </Button>
-            </div>
+            <FormActions
+                :processing="form.processing"
+                submit-label="Simpan User"
+                :cancel-href="users.index().url"
+            />
         </form>
     </div>
 </template>

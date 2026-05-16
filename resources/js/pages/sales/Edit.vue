@@ -11,6 +11,16 @@ import { useRupiah } from '@/composables/useRupiah';
 import { useSaleFormStore } from '@/stores/useSaleFormStore';
 import type { ItemOption, PageProps, SaleEdit } from '@/types';
 import sales from '@/routes/sales';
+import { dashboard } from '@/routes';
+import { useBreadcrumb } from '@/composables/useBreadcrumbs';
+
+const { setBreadcrumbs } = useBreadcrumb();
+
+setBreadcrumbs([
+    { title: 'Dashboard', href: dashboard().url },
+    { title: 'Penjualan', href: sales.index().url },
+    { title: 'Edit Penjualan' },
+]);
 
 const props = defineProps<
     PageProps<{
@@ -124,18 +134,11 @@ function submit() {
                 </div>
             </div>
 
-            <div class="flex gap-3">
-                <Button type="submit" :disabled="form.processing">
-                    {{ form.processing ? 'Menyimpan...' : 'Simpan Perubahan' }}
-                </Button>
-                <Button
-                    type="button"
-                    variant="outline"
-                    @click="router.visit(sales.show(props.sale.data.id).url)"
-                >
-                    Batal
-                </Button>
-            </div>
+            <FormActions
+                :processing="form.processing"
+                submit-label="Simpan Perubahan"
+                :cancel-href="sales.show(props.sale.data.id).url"
+            />
         </form>
     </div>
 </template>

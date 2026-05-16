@@ -12,6 +12,8 @@ import { useRupiah } from '@/composables/useRupiah';
 import { useAuthStore } from '@/stores/useAuthStore';
 import type { PageProps, SaleRow } from '@/types';
 import saleRoutes from '@/routes/sales';
+import { dashboard } from '@/routes';
+import { useBreadcrumb } from '@/composables/useBreadcrumbs';
 
 const props = defineProps<
     PageProps<{
@@ -22,6 +24,13 @@ const props = defineProps<
         };
     }>
 >();
+
+const { setBreadcrumbs } = useBreadcrumb();
+
+setBreadcrumbs([
+    { title: 'Dashboard', href: dashboard().url },
+    { title: 'Penjualan' },
+]);
 
 const auth = useAuthStore();
 const { format } = useRupiah();

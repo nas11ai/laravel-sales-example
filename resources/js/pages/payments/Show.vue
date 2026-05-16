@@ -8,6 +8,16 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import type { PageProps, PaymentDetail } from '@/types';
 import payments from '@/routes/payments';
 import sales from '@/routes/sales';
+import { dashboard } from '@/routes';
+import { useBreadcrumb } from '@/composables/useBreadcrumbs';
+
+const { setBreadcrumbs } = useBreadcrumb();
+
+setBreadcrumbs([
+    { title: 'Dashboard', href: dashboard().url },
+    { title: 'Pembayaran', href: payments.index().url },
+    { title: 'Tambah Pembayaran' },
+]);
 
 const props = defineProps<
     PageProps<{

@@ -4,6 +4,7 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { createPinia } from 'pinia';
 import AppLayout from '@/layouts/AppLayout.vue';
 import AuthLayout from '@/layouts/AuthLayout.vue';
+import '../css/sonner.css';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Sales App';
 

@@ -16,6 +16,11 @@ import { Label } from '@/components/ui/label';
 import { useRupiah } from '@/composables/useRupiah';
 import type { BulanData, ItemData, PageProps } from '@/types';
 import { dashboard } from '@/routes';
+import { useBreadcrumb } from '@/composables/useBreadcrumbs';
+
+const { setBreadcrumbs } = useBreadcrumb();
+
+setBreadcrumbs([{ title: 'Dashboard' }]);
 
 const props = defineProps<
     PageProps<{

@@ -15,6 +15,16 @@ import RupiahInput from '@/components/RupiahInput.vue';
 import { useRupiah } from '@/composables/useRupiah';
 import type { PageProps, SaleOption } from '@/types';
 import payments from '@/routes/payments';
+import { dashboard } from '@/routes';
+import { useBreadcrumb } from '@/composables/useBreadcrumbs';
+
+const { setBreadcrumbs } = useBreadcrumb();
+
+setBreadcrumbs([
+    { title: 'Dashboard', href: dashboard().url },
+    { title: 'Pembayaran', href: payments.index().url },
+    { title: 'Tambah Pembayaran' },
+]);
 
 const props = defineProps<
     PageProps<{
@@ -138,18 +148,11 @@ function submit() {
                 </p>
             </div>
 
-            <div class="flex gap-3 pt-2">
-                <Button type="submit" :disabled="form.processing">
-                    {{ form.processing ? 'Menyimpan...' : 'Simpan Pembayaran' }}
-                </Button>
-                <Button
-                    type="button"
-                    variant="outline"
-                    @click="$inertia.visit(payments.index().url)"
-                >
-                    Batal
-                </Button>
-            </div>
+            <FormActions
+                :processing="form.processing"
+                submit-label="Simpan Pembayaran"
+                :cancel-href="payments.index().url"
+            />
         </form>
     </div>
 </template>

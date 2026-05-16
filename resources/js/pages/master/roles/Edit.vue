@@ -7,6 +7,16 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import roles from '@/routes/master/roles';
 import { RoleData } from '@/types';
+import { dashboard } from '@/routes';
+import { useBreadcrumb } from '@/composables/useBreadcrumbs';
+
+const { setBreadcrumbs } = useBreadcrumb();
+
+setBreadcrumbs([
+    { title: 'Dashboard', href: dashboard().url },
+    { title: 'Master Role & Permission', href: roles.index().url },
+    { title: 'Edit Role & Permission' },
+]);
 
 defineOptions({
     inheritAttrs: false,
@@ -142,19 +152,11 @@ const actionLabel: Record<string, string> = {
                 </div>
             </div>
 
-            <div class="flex gap-3">
-                <Button type="submit" :disabled="form.processing">
-                    {{ form.processing ? 'Menyimpan...' : 'Simpan Permission' }}
-                </Button>
-
-                <Button
-                    type="button"
-                    variant="outline"
-                    @click="router.visit(roles.index().url)"
-                >
-                    Batal
-                </Button>
-            </div>
+            <FormActions
+                :processing="form.processing"
+                submit-label="Simpan Perubahan"
+                :cancel-href="roles.index().url"
+            />
         </form>
     </div>
 </template>

@@ -11,6 +11,15 @@ import userRoutes from '@/routes/master/users';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { ref } from 'vue';
 import RoleComponentSheet from '@/components/RoleComponentSheet.vue';
+import { dashboard } from '@/routes';
+import { useBreadcrumb } from '@/composables/useBreadcrumbs';
+
+const { setBreadcrumbs } = useBreadcrumb();
+
+setBreadcrumbs([
+    { title: 'Dashboard', href: dashboard().url },
+    { title: 'Master User' },
+]);
 
 const props = defineProps<
     PageProps<{

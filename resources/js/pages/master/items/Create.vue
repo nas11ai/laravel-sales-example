@@ -6,6 +6,16 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import RupiahInput from '@/components/RupiahInput.vue';
 import items from '@/routes/master/items';
+import { dashboard } from '@/routes';
+import { useBreadcrumb } from '@/composables/useBreadcrumbs';
+
+const { setBreadcrumbs } = useBreadcrumb();
+
+setBreadcrumbs([
+    { title: 'Dashboard', href: dashboard().url },
+    { title: 'Master Item', href: items.index().url },
+    { title: 'Tambah Item' },
+]);
 
 const form = useForm({
     kode: '',
@@ -83,18 +93,11 @@ function submit() {
                 </p>
             </div>
 
-            <div class="flex gap-3 pt-2">
-                <Button type="submit" :disabled="form.processing">
-                    {{ form.processing ? 'Menyimpan...' : 'Simpan' }}
-                </Button>
-                <Button
-                    type="button"
-                    variant="outline"
-                    @click="$inertia.visit(items.index().url)"
-                >
-                    Batal
-                </Button>
-            </div>
+            <FormActions
+                :processing="form.processing"
+                submit-label="Simpan Item"
+                :cancel-href="items.index().url"
+            />
         </form>
     </div>
 </template>
