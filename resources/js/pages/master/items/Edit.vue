@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import type { Item, PageProps } from '@/types';
 import RupiahInput from '@/components/RupiahInput.vue';
+import items from '@/routes/master/items';
 
 const props = defineProps<
     PageProps<{
@@ -33,7 +34,7 @@ function onImageChange(e: Event) {
 }
 
 function submit() {
-    form.post(`/master/items/${props.item.data.id}`, {
+    form.post(items.update(props.item.data.id).url, {
         forceFormData: true,
     });
 }
@@ -102,7 +103,7 @@ function submit() {
                 <Button
                     type="button"
                     variant="outline"
-                    @click="$inertia.visit('/master/items')"
+                    @click="$inertia.visit(items.index().url)"
                 >
                     Batal
                 </Button>

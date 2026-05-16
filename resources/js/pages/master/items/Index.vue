@@ -7,6 +7,7 @@ import DataTable from '@/components/DataTable.vue';
 import { Button } from '@/components/ui/button';
 import { useRupiah } from '@/composables/useRupiah';
 import type { Item, PageProps } from '@/types';
+import itemRoutes from '@/routes/master/items';
 
 defineProps<
     PageProps<{
@@ -20,7 +21,7 @@ const { format } = useRupiah();
 
 function deleteItem(id: number) {
     if (!confirm('Yakin ingin menghapus item ini?')) return;
-    router.delete(`/master/items/${id}`, {
+    router.delete(itemRoutes.destroy(id).url, {
         preserveScroll: true,
     });
 }
@@ -79,9 +80,7 @@ const columns: ColumnDef<Item>[] = [
                         variant: 'outline',
                         size: 'sm',
                         onClick: () =>
-                            router.visit(
-                                `/master/items/${row.original.id}/edit`,
-                            ),
+                            router.visit(itemRoutes.edit(row.original.id).url),
                     },
                     () => [h(Pencil, { class: 'size-4' })],
                 ),
@@ -119,7 +118,7 @@ const columns: ColumnDef<Item>[] = [
         >
             <template #actions>
                 <Button as-child>
-                    <Link href="/master/items/create">
+                    <Link href="{itemRoutes.create().url}">
                         <Plus class="mr-2 size-4" />
                         Tambah Item
                     </Link>
