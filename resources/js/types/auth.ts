@@ -25,3 +25,18 @@ export interface RoleData {
     name: string;
     permissions: string[];
 }
+
+export interface UserRow {
+    id: number;
+    name: string;
+    email: string;
+    role: string | null;
+    created_at: string;
+}
+
+export interface UserData {
+    id: number;
+    name: string;
+    email: string;
+    role: string | null;
+}
