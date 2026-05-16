@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -19,10 +20,24 @@ class UserController extends Controller
     {
         Gate::authorize('viewAny', User::class);
 
+        $groupedPermissions = Permission::all()
+            ->groupBy(fn($permission) => explode('.', $permission->name)[0])
+            ->map(fn($group) => $group->pluck('name')->values());
+
         return Inertia::render('master/users/Index', [
             'users' => UserResource::collection(
                 User::with('roles')->latest()->get()
             ),
+
+            'roles' => Role::with('permissions')->get()
+                ->keyBy('name')
+                ->map(fn($role) => [
+                    'id'          => $role->id,
+                    'name'        => $role->name,
+                    'permissions' => $role->permissions->pluck('name')->toArray(),
+                ]),
+
+            'groupedPermissions' => $groupedPermissions,
         ]);
     }
 

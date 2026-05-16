@@ -2,20 +2,36 @@
 import { Head, router } from '@inertiajs/vue3';
 import type { ColumnDef } from '@tanstack/vue-table';
 import { h } from 'vue';
-import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
+import { Pencil, Plus, ShieldCheck, Trash2 } from 'lucide-vue-next';
 import DataTable from '@/components/DataTable.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import type { PageProps, UserRow } from '@/types';
+import type { PageProps, RoleData, UserRow } from '@/types';
 import userRoutes from '@/routes/master/users';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { ref } from 'vue';
+import RoleComponentSheet from '@/components/RoleComponentSheet.vue';
 
-defineProps<
+const props = defineProps<
     PageProps<{
         users: {
             data: UserRow[];
         };
+        roles: Record<string, RoleData>;
+        groupedPermissions: Record<string, string[]>;
     }>
 >();
+
+const auth = useAuthStore();
+
+const sheetOpen = ref(false);
+const selectedRole = ref<RoleData | null>(null);
+
+function openRoleSheet(roleName: string | null) {
+    if (!roleName || !props.roles[roleName]) return;
+    selectedRole.value = props.roles[roleName];
+    sheetOpen.value = true;
+}
 
 function deleteUser(id: number) {
     if (!confirm('Yakin ingin menghapus user ini?')) return;
@@ -42,7 +58,26 @@ const columns: ColumnDef<UserRow>[] = [
         accessorKey: 'role',
         header: 'Role',
         cell: ({ row }) =>
-            h(Badge, { variant: 'secondary' }, () => row.original.role ?? '-'),
+            h('div', { class: 'flex items-center gap-2' }, [
+                h(
+                    Badge,
+                    { variant: 'secondary' },
+                    () => row.original.role ?? '-',
+                ),
+                auth.can('roles.edit') && row.original.role
+                    ? h(
+                          Button,
+                          {
+                              variant: 'ghost',
+                              size: 'sm',
+                              class: 'h-6 w-6 p-0 text-muted-foreground hover:text-foreground',
+                              title: 'Kelola permission role ini',
+                              onClick: () => openRoleSheet(row.original.role),
+                          },
+                          () => h(ShieldCheck, { class: 'size-3.5' }),
+                      )
+                    : null,
+            ]),
     },
     {
         accessorKey: 'created_at',
@@ -104,4 +139,10 @@ const columns: ColumnDef<UserRow>[] = [
             </template>
         </DataTable>
     </div>
+
+    <RoleComponentSheet
+        v-model:open="sheetOpen"
+        :role="selectedRole"
+        :grouped-permissions="groupedPermissions"
+    />
 </template>
