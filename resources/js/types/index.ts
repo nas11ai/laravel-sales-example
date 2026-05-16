@@ -81,6 +81,55 @@ export interface Payment {
     updated_at: string;
 }
 
+export interface PaymentRow {
+    id: number;
+    kode: string;
+    tanggal_label: string;
+    jumlah: number;
+    sale: {
+        kode: string;
+        status_label: string;
+    };
+}
+
+export interface SaleOption {
+    id: number;
+    kode: string;
+    tanggal: string;
+    total_amount: number;
+    total_paid: number;
+    sisa: number;
+    status_label: string;
+}
+
+export interface PaymentEdit {
+    id: number;
+    kode: string;
+    tanggal: string;
+    jumlah: number;
+    sale: {
+        id: number;
+        kode: string;
+        total_amount: number;
+        total_paid: number;
+        status_label: string;
+        sisa: number;
+    };
+}
+
+export interface PaymentDetail {
+    id: number;
+    kode: string;
+    tanggal_label: string;
+    jumlah: number;
+    sale: {
+        id: number;
+        kode: string;
+        total_amount: number;
+        status_label: string;
+    };
+}
+
 export interface SaleDetail {
     id: number;
     kode: string;
