@@ -31,4 +31,17 @@ export default defineConfig({
             formVariants: true,
         }),
     ],
+    server: {
+        host: '0.0.0.0',
+        port: 5173,
+        strictPort: true,
+        cors: {
+            origin: 'https://laravel-sales-example.ddev.site',
+        },
+        hmr: {
+            host: 'laravel-sales-example.ddev.site',
+            protocol: 'wss',
+        },
+        origin: 'https://laravel-sales-example.ddev.site:5173',
+    },
 });
